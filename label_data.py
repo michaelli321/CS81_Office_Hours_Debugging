@@ -118,11 +118,9 @@ def get_label_stats(state):
 
     return labeled, val_splits
 
-def verify_value(state, value):
-    if value in state['LABEL_VALS']:
-        return True
-    else:
-        return False
+def save_data(state):
+    pass
+    # save dataset -- overwrite or new file name?
 
 def main():
     state = {'LABEL': None, 'DATA': None, 'DATAFILE': 'data/questions.json', 'LABEL_VALS': None}
@@ -133,29 +131,35 @@ def main():
 
     num_labeled, val_splits = get_label_stats(state)
 
-    while True:
-        print('\n-------' + state['LABEL'] + '---------Labeled: ' + 
-            str(num_labeled) + '--------To Do: ' + str(len(state['DATA'])-num_labeled) + '---------\n')
+    np.random.shuffle(state['DATA'])
 
-        np.random.shuffle(state['DATA'])
-
-        for i in range(len(state['DATA'])):
-            if state['LABEL'] in state['DATA'][i]:
-                continue
-            else:
-                while True:
-                    print(state['DATA'][i]['question']+'\n')
-                    val = input('Value: ')
-                    if verify_value(state, val):
-                        state['DATA'][i][state['LABEL']] = val
-                        num_labeled += 1
-                        val_splits[val] += 1
-                        break
-                    else:
-                        print('Please enter a valid value\n')
-
-    # skip option
-    # save dataset -- overwrite or new file name?
+    for i in range(len(state['DATA'])):
+        if state['LABEL'] in state['DATA'][i]:
+            continue
+        else:
+            while True:
+                print('\n\n\n-------' + state['LABEL'] + '---------Labeled: ' + 
+                    str(num_labeled) + '--------To Do: ' + 
+                    str(len(state['DATA'])-num_labeled) + '---------')
+                print(state['DATA'][i]['question'])
+                val = input('------ s for save -------- n for next -------- ' +
+                    'l for label stats --------- q for quit ----------\n')
+                
+                if val in state['LABEL_VALS']:
+                    state['DATA'][i][state['LABEL']] = val
+                    num_labeled += 1
+                    val_splits[val] += 1
+                    break
+                elif val == 'n':
+                    break
+                elif val == 'l':
+                    print(val_splits)
+                elif val == 's':
+                    save_data(state)
+                elif val == 'q':
+                    exit()
+                else:
+                    print('Please enter a valid value\n')
 
 if __name__ == "__main__":
     main()
