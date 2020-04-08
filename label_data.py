@@ -30,7 +30,7 @@ def load_data(state):
 
     return state
 
-def prompt_and_load_file(state, default='questions.json'):
+def prompt_and_load_file(state):
     while state['DATA'] == None:
         filename = input('Name of dataset to load?\n')
         path = 'data/'+filename
@@ -43,10 +43,10 @@ def prompt_and_load_file(state, default='questions.json'):
 
     return state
 
-def validate_input(text, existing_labels=None):
+def validate_input(state, text, existing_labels=None):
     regex = re.compile('[@!#$%^&*()<>?/\|}{~:\s]')
 
-    if regex.search(text) == None and text != '':
+    if regex.search(text) == None and text != '' and text not in state['RESERVED_KEYS']:
         if existing_labels:
             if text not in existing_labels:
                 return True
@@ -70,7 +70,7 @@ def get_values_for_new_label():
     value = input("Please enter a value for the label\n")
     
     while value != '':
-        if validate_input(value):
+        if validate_input(state, value):
             values.append(value)
         else:
             print("Please enter a valid value (No special characters)")
@@ -82,7 +82,7 @@ def get_values_for_new_label():
 def create_new_label(state, existing_labels):
     label = input('What is the name of the new label?\n')
 
-    while not validate_input(label, existing_labels):
+    while not validate_input(state, label, existing_labels):
         label = input("Please enter a valid new label\n")
 
     values = get_values_for_new_label()
@@ -91,6 +91,8 @@ def create_new_label(state, existing_labels):
         f.write(label + ' '+' '.join(values)+'\n')
 
     state['LABEL'] = label
+    state['LABEL_VALS'] = values
+
     return state
 
 def load_label(state):
@@ -127,7 +129,7 @@ def save_data(state):
     filename = input('Filename to save data? \n')
 
     if filename is '':
-        filename = state('DATAFILE')
+        filename = state['DATAFILE']
     if os.path.isfile('data/'+filename):
         overwrite = input("overwrite? any character for undo")
         if overwrite != '':
@@ -140,7 +142,8 @@ def save_data(state):
             fout.write('\n')
 
 def main():
-    state = {'LABEL': None, 'DATA': None, 'DATAFILE': 'questions.json', 'LABEL_VALS': None}
+    state = {'LABEL': None, 'DATA': None, 'DATAFILE': 'questions.json', 'LABEL_VALS': None, 
+    'RESERVED_KEYS': {'s', 'n', 'l', 'q'}}
 
     # eventually want to have option to filter data and append to existing dataset
     state = prompt_and_load_file(state)
@@ -163,8 +166,13 @@ def main():
                 print('==========++++++++++*********++++++++++==========')
                 val = input('------ s for save -------- n for next -------- ' +
                     'l for label stats --------- q for quit ----------\n')
-                
-                if val == 'n':
+
+                if val in state['LABEL_VALS']:
+                    state['DATA'][i][state['LABEL']] = val
+                    num_labeled += 1
+                    val_splits[val] += 1
+                    break
+                elif val == 'n':
                     break
                 elif val == 'l':
                     print(val_splits)
@@ -172,11 +180,6 @@ def main():
                     save_data(state)
                 elif val == 'q':
                     exit()
-                elif val in state['LABEL_VALS']:
-                    state['DATA'][i][state['LABEL']] = val
-                    num_labeled += 1
-                    val_splits[val] += 1
-                    break
                 else:
                     print('Please enter a valid value\n')
 
