@@ -1,9 +1,6 @@
 import pandas as pd
 import numpy as np
-
-CURRENT_LABEL = None
-DATA = None
-DATAFILE = 'data/questions.json'
+import os
 
 # def filter_dataset(filename):
 #     questions = list(set(pd.read_json(filename, lines=True)["question"]))
@@ -24,27 +21,28 @@ DATAFILE = 'data/questions.json'
     
 #     return filtered
 
-def load_data():
-    while DATA == None:
-        try:
-            datafile = input('Name of dataset to load?\n')
-            if datafile == '':
-                DATA = pd.read_json(DATAFILE, lines=True).to_dict('records')
-            else:
-                load_data(datafile)
-        except ValueError:
-            print('Please enter a valid filename\n')
-
-    DATA = pd.read_json(filename, lines=True).to_dict('records')
-
+def load_data(state):
     print('Loading Data...\n')
+    state['DATA'] = pd.read_json(state['DATAFILE'], lines=True).to_dict('records')
+    return state
+
+def load_file(state):
+    path = input('Name of dataset to load?\n')
+
+    if path is '' or os.path.isfile(path):
+        state['DATAFILE'] = path if path is not "" else state['DATAFILE']
+        state = load_data(state)
+    else:
+        print('Please enter a valid filename\n')
+
+    return state
 
 def main():
-    load_data() # eventually want to have option to filter data and append to existing dataset
-    
-    
+    state = {'CURRENT_LABEL': None, 'DATA': None, 'DATAFILE': 'data/questions.json'}
 
-    
+    # eventually want to have option to filter data and append to existing dataset
+    while state['DATA'] == None:
+        state = load_file(state)
 
     label = input('type label or n for new label')
 
