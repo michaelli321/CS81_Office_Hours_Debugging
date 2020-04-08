@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import json
 import os
 import re
 
@@ -24,15 +25,16 @@ import re
 
 def load_data(state):
     print('Loading Data...\n')
-    state['DATA'] = pd.read_json(state['DATAFILE'], lines=True).to_dict('records')
+    state['DATA'] = pd.read_json('data/'+state['DATAFILE'], lines=True).to_dict('records')
     return state
 
-def prompt_and_load_file(state, default='data/questions.json'):
+def prompt_and_load_file(state, default='questions.json'):
     while state['DATA'] == None:
-        path = input('Name of dataset to load?\n')
+        filename = input('Name of dataset to load?\n')
+        path = 'data/'+filename
 
-        if path is '' or os.path.isfile(path):
-            state['DATAFILE'] = path if path is not '' else state['DATAFILE']
+        if filename is '' or os.path.isfile(path):
+            state['DATAFILE'] = filename if filename is not '' else state['DATAFILE']
             state = load_data(state)
         else:
             print('Please enter a valid filename\n')
@@ -114,16 +116,29 @@ def get_label_stats(state):
     for data_point in state['DATA']:
         if state['LABEL'] in data_point:
             labeled += 1
+            print(data_point)
             val_splits[data_point[state['LABEL']]] += 1
 
     return labeled, val_splits
 
 def save_data(state):
-    pass
-    # save dataset -- overwrite or new file name?
+    filename = input('Filename to save data? \n')
+
+    if filename is '':
+        filename = state('DATAFILE')
+    if os.path.isfile('data/'+filename):
+        overwrite = input("overwrite? any character for undo")
+        if overwrite != '':
+            return
+
+    print("Saving data\n")
+    with open('data/'+filename+'.json', 'w') as fout:
+        for dic in state['DATA']:
+            json.dump(dic, fout)
+            fout.write('\n')
 
 def main():
-    state = {'LABEL': None, 'DATA': None, 'DATAFILE': 'data/questions.json', 'LABEL_VALS': None}
+    state = {'LABEL': None, 'DATA': None, 'DATAFILE': 'questions.json', 'LABEL_VALS': None}
 
     # eventually want to have option to filter data and append to existing dataset
     state = prompt_and_load_file(state)
