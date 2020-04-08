@@ -109,16 +109,12 @@ def load_label(state):
 
 def get_label_stats(state):
     labeled = 0
-    val_splits = {}
+    val_splits = {val: 0 for val in state['LABEL_VALS']}
 
     for data_point in state['DATA']:
         if state['LABEL'] in data_point:
             labeled += 1
-            #initialize with values
-            if data_point[state['LABEL']] in val_splits:
-                val_splits[data_point[state['LABEL']]] += 1
-            else:
-                val_splits[data_point[state['LABEL']]] = 1
+            val_splits[data_point[state['LABEL']]] += 1
 
     return labeled, val_splits
 
@@ -148,6 +144,7 @@ def main():
                 continue
             else:
                 while True:
+                    print(state['DATA'][i]['question']+'\n')
                     val = input('Value: ')
                     if verify_value(state, val):
                         state['DATA'][i][state['LABEL']] = val
@@ -155,7 +152,7 @@ def main():
                         val_splits[val] += 1
                         break
                     else:
-                        Print('Please enter a valid value\n')
+                        print('Please enter a valid value\n')
 
     # skip option
     # save dataset -- overwrite or new file name?
