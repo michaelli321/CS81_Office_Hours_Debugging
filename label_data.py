@@ -39,13 +39,19 @@ def prompt_and_load_file(state, default='data/questions.json'):
 
     return state
 
-def validate_label(label, existing_labels):
-    regex = re.compile('[@_!#$%^&*()<>?/\|}{~:\s]')
+def validate_input(text, existing_labels=None):
+    regex = re.compile('[@!#$%^&*()<>?/\|}{~:\s]')
 
-    if label not in existing_labels and regex.search(string) == None:
-        return True
-    else:
-        return False
+    if regex.search(text) == None and text != '':
+        if existing_labels:
+            if text not in existing_labels:
+                return True
+            else:
+                return False
+        else:
+            return True
+    
+    return False
 
 def load_existing_labels():
     existing_labels = None
@@ -53,16 +59,32 @@ def load_existing_labels():
     with open('labels', 'r') as f:
         existing_labels = f.read().splitlines()
 
-    return set(existing_labels)
+    return {label.split()[0]: set(label.split()[1:]) for label in existing_labels}
 
-def create_new_label(state):
+def get_values_for_new_label():
+    values = []
+    value = input("Please enter a value for the label\n")
+    
+    while value != '':
+        if validate_input(value):
+            values.append(value)
+        else:
+            print("Please enter a valid value (No special characters)")
+
+        value = input("Please enter another value for the label\n")
+
+    return values
+
+def create_new_label(state, existing_labels):
     label = input('What is the name of the new label?\n')
 
-    while not validate_label(label, existing_labels):
+    while not validate_input(label, existing_labels):
         label = input("Please enter a valid new label\n")
 
-    with open(labels, 'a') as f:
-        f.write(label+'\n')
+    values = get_values_for_new_label()
+    
+    with open('labels', 'a') as f:
+        f.write(label + ' '+' '.join(values)+'\n')
 
     state['LABEL'] = label
     return state
@@ -74,28 +96,55 @@ def load_label(state):
         label = input('type label or n for new label\n')
 
         if label == 'n':
-            state = create_new_label(state)
+            state = create_new_label(state, existing_labels)
         else:
             if label in existing_labels:
                 state['LABEL'] = label
+                state['LABEL_VALS'] = existing_labels[label]
             else:
                 print('Please enter a valid label from the following:')
-                print(existing_labels)
+                print(', '.join(existing_labels.keys())+'\n')
 
     return state
 
+def get_label_stats(state):
+    labeled = 0
+    val_splits = {}
+
+    for data_point in state['DATA']:
+        if state['LABEL'] in data_point:
+            labeled += 1
+
+            if data_point[state['LABEL']] in val_splits:
+                val_splits[data_point[state['LABEL']]] += 1
+            else:
+                val_splits[data_point[state['LABEL']]] = 1
+
+    return labeled, val_splits
+
 def main():
-    state = {'LABEL': None, 'DATA': None, 'DATAFILE': 'data/questions.json'}
+    state = {'LABEL': None, 'DATA': None, 'DATAFILE': 'data/questions.json', 'LABEL_VALS': None}
 
     # eventually want to have option to filter data and append to existing dataset
     state = prompt_and_load_file(state)
     state = load_label(state)
 
+    num_labeled, val_splits = get_label_stats(state)
+
     while True:
+        print('\n-------' + state['LABEL'] + '---------Labeled: ' + 
+            str(num_labeled) + '--------To Do: ' + str(len(state['DATA'])-num_labeled) + '---------\n')
+
+        # for data_point in state['DATA']:
+        #     if state['LABEL'] in data_point:
+        #         continue
+        #     else:
+        #         val = input("Value: ")
+
+
+
         break
-    # label data or create new label?
-    # if label data -> which label?
-    # print how many unlabeled? how many to-do?
+
     # skip option
     # save dataset -- overwrite or new file name?
 
