@@ -32,7 +32,7 @@ def prompt_and_load_file(state, default='data/questions.json'):
         path = input('Name of dataset to load?\n')
 
         if path is '' or os.path.isfile(path):
-            state['DATAFILE'] = path if path is not "" else state['DATAFILE']
+            state['DATAFILE'] = path if path is not '' else state['DATAFILE']
             state = load_data(state)
         else:
             print('Please enter a valid filename\n')
@@ -114,13 +114,19 @@ def get_label_stats(state):
     for data_point in state['DATA']:
         if state['LABEL'] in data_point:
             labeled += 1
-
+            #initialize with values
             if data_point[state['LABEL']] in val_splits:
                 val_splits[data_point[state['LABEL']]] += 1
             else:
                 val_splits[data_point[state['LABEL']]] = 1
 
     return labeled, val_splits
+
+def verify_value(state, value):
+    if value in state['LABEL_VALS']:
+        return True
+    else:
+        return False
 
 def main():
     state = {'LABEL': None, 'DATA': None, 'DATAFILE': 'data/questions.json', 'LABEL_VALS': None}
@@ -135,15 +141,21 @@ def main():
         print('\n-------' + state['LABEL'] + '---------Labeled: ' + 
             str(num_labeled) + '--------To Do: ' + str(len(state['DATA'])-num_labeled) + '---------\n')
 
-        # for data_point in state['DATA']:
-        #     if state['LABEL'] in data_point:
-        #         continue
-        #     else:
-        #         val = input("Value: ")
+        np.random.shuffle(state['DATA'])
 
-
-
-        break
+        for i in range(len(state['DATA'])):
+            if state['LABEL'] in state['DATA'][i]:
+                continue
+            else:
+                while True:
+                    val = input('Value: ')
+                    if verify_value(state, val):
+                        state['DATA'][i][state['LABEL']] = val
+                        num_labeled += 1
+                        val_splits[val] += 1
+                        break
+                    else:
+                        Print('Please enter a valid value\n')
 
     # skip option
     # save dataset -- overwrite or new file name?
