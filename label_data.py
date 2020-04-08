@@ -27,27 +27,32 @@ def load_data(state):
     return state
 
 def load_file(state):
-    path = input('Name of dataset to load?\n')
+    while state['DATA'] == None:
+        path = input('Name of dataset to load?\n')
 
-    if path is '' or os.path.isfile(path):
-        state['DATAFILE'] = path if path is not "" else state['DATAFILE']
-        state = load_data(state)
-    else:
-        print('Please enter a valid filename\n')
+        if path is '' or os.path.isfile(path):
+            state['DATAFILE'] = path if path is not "" else state['DATAFILE']
+            state = load_data(state)
+        else:
+            print('Please enter a valid filename\n')
 
     return state
 
+def load_label(state):
+    print('yes')
+    # while state['LABEL'] == None:
+
+        # label = input('type label or n for new label')
+
+        
+
+
 def main():
-    state = {'CURRENT_LABEL': None, 'DATA': None, 'DATAFILE': 'data/questions.json'}
+    state = {'LABEL': None, 'DATA': None, 'DATAFILE': 'data/questions.json'}
 
     # eventually want to have option to filter data and append to existing dataset
-    while state['DATA'] == None:
-        state = load_file(state)
-
-    label = input('type label or n for new label')
-
-
-
+    state = load_file(state)
+    state = load_label(state)
 
     while True:
         break
