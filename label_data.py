@@ -25,7 +25,6 @@ import re
 
 def load_data(state):
     print('Loading Data...\n')
-    # state['DATA'] = pd.read_json('data/'+state['DATAFILE'], lines=True).to_dict('records')
     with open('data/'+state['DATAFILE'], 'r') as f:
         state['DATA'] = [eval(data_point) for data_point in f.read().splitlines()]
 
