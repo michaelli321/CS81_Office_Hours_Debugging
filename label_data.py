@@ -25,7 +25,10 @@ import re
 
 def load_data(state):
     print('Loading Data...\n')
-    state['DATA'] = pd.read_json('data/'+state['DATAFILE'], lines=True).to_dict('records')
+    # state['DATA'] = pd.read_json('data/'+state['DATAFILE'], lines=True).to_dict('records')
+    with open('data/'+state['DATAFILE'], 'r') as f:
+        state['DATA'] = [eval(data_point) for data_point in f.read().splitlines()]
+
     return state
 
 def prompt_and_load_file(state, default='questions.json'):
@@ -112,11 +115,11 @@ def load_label(state):
 def get_label_stats(state):
     labeled = 0
     val_splits = {val: 0 for val in state['LABEL_VALS']}
-
+    # print(state['DATA'][:10])
     for data_point in state['DATA']:
         if state['LABEL'] in data_point:
             labeled += 1
-            print(data_point)
+            # print(data_point)
             val_splits[data_point[state['LABEL']]] += 1
 
     return labeled, val_splits
@@ -132,7 +135,7 @@ def save_data(state):
             return
 
     print("Saving data\n")
-    with open('data/'+filename+'.json', 'w') as fout:
+    with open('data/'+filename, 'w') as fout:
         for dic in state['DATA']:
             json.dump(dic, fout)
             fout.write('\n')
@@ -156,16 +159,13 @@ def main():
                 print('\n\n\n-------' + state['LABEL'] + '---------Labeled: ' + 
                     str(num_labeled) + '--------To Do: ' + 
                     str(len(state['DATA'])-num_labeled) + '---------')
+                print('==========++++++++++*********++++++++++==========')
                 print(state['DATA'][i]['question'])
+                print('==========++++++++++*********++++++++++==========')
                 val = input('------ s for save -------- n for next -------- ' +
                     'l for label stats --------- q for quit ----------\n')
                 
-                if val in state['LABEL_VALS']:
-                    state['DATA'][i][state['LABEL']] = val
-                    num_labeled += 1
-                    val_splits[val] += 1
-                    break
-                elif val == 'n':
+                if val == 'n':
                     break
                 elif val == 'l':
                     print(val_splits)
@@ -173,6 +173,11 @@ def main():
                     save_data(state)
                 elif val == 'q':
                     exit()
+                elif val in state['LABEL_VALS']:
+                    state['DATA'][i][state['LABEL']] = val
+                    num_labeled += 1
+                    val_splits[val] += 1
+                    break
                 else:
                     print('Please enter a valid value\n')
 
