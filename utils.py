@@ -28,6 +28,9 @@ def load_data(filename, label_name):
     with open(filename, 'r') as f:
         return np.array([[eval(data_point)['question'], eval(data_point)[label_name]] for data_point in f.read().splitlines() if label_name in eval(data_point)])
 
+def remove_non_ascii(question):
+	return ''.join([i if ord(i) < 128 else '' for i in question])
+
 def is_filename(text):
     if '.c' in text or '.py' in text:
         return True
@@ -50,6 +53,7 @@ def is_TA_or_instructor_name(text):
         return False
 
 def actual_question_preprocessor(sentence):
+	sentence = remove_non_ascii(sentence)
 	tokenizer = RegexpTokenizer("[^;\s.?,!()]+\.c|[^;\s.,?!()]+\.py|[^;\s.?!(),]+\(\)|[^;\s.?,!()]+")
 	sentence = tokenizer.tokenize(sentence.lower())
 

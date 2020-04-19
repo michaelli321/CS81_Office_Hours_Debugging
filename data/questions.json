@@ -2678,9 +2678,10 @@
 {"question": "Defined what functions should do; implementation is wrong."}
 {"question": "1) clarifying question: stress test for removeFront and removeBack expects \"[]\"\n2) "}
 {"question": "How to find global address of stack pointer"}
-{"question": "ASDAsdASDAsdASDAsdADASDAsd"}
+{"question": "ASDAsdASDAsdASDAsdADASDAsd", "actual_question": "f"}
 {"question": "SwapDown method not working "}
 {"question": "NullPointerException in AI part of the project"}
+{"question": "my code segfault my code segfaults", "actual_question": "f"}
 {"question": "Confusion on BeaverMapsGraph"}
 {"question": "tf is a chain\nstup 1 and stup 2 bak at it agan ;P "}
 {"question": "b tests helpppppp"}
