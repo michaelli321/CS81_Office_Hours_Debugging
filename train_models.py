@@ -12,39 +12,19 @@ from sklearn.metrics import multilabel_confusion_matrix
 import sys
 sys.path.insert(0, os.path.dirname(__file__))
 
-def load_data(state):
-    print('Loading Data...\n')
-    with open('data/'+state['DATAFILE'], 'r') as f:
-        state['DATA'] = [eval(data_point) for data_point in f.read().splitlines()]
+# def validate_input(state, text, existing_labels=None):
+#     regex = re.compile('[@!#$%^&*()<>?/\|}{~:\s]')
 
-    return state
-
-def prompt_and_load_file(state):
-    while state['DATA'] == None:
-        filename = input('Name of dataset to load?\n')
-        path = 'data/'+filename
-
-        if filename is '' or os.path.isfile(path):
-            state['DATAFILE'] = filename if filename is not '' else state['DATAFILE']
-            state = load_data(state)
-        else:
-            print('Please enter a valid filename\n')
-
-    return state
-
-def validate_input(state, text, existing_labels=None):
-    regex = re.compile('[@!#$%^&*()<>?/\|}{~:\s]')
-
-    if regex.search(text) == None and text != '' and text not in state['RESERVED_KEYS']:
-        if existing_labels:
-            if text not in existing_labels:
-                return True
-            else:
-                return False
-        else:
-            return True
+#     if regex.search(text) == None and text != '' and text not in state['RESERVED_KEYS']:
+#         if existing_labels:
+#             if text not in existing_labels:
+#                 return True
+#             else:
+#                 return False
+#         else:
+#             return True
     
-    return False
+#     return False
 
 def load_existing_labels():
     existing_labels = None
@@ -142,8 +122,6 @@ def save_model(state):
         print('\nModel Saved')
 
 def main():
-    # state = {'LABEL': None, 'DATA': None, 'DATAFILE': 'questions.json', 'LABEL_VALS': None, 
-    # 'RESERVED_KEYS': {'s', 'n', 'l', 'q'}, 'CLF': None}
     preprocessors = {
         'actual_question': utils.actual_question_preprocessor,
         # 'question_type': utils.question_type_preprocessor
