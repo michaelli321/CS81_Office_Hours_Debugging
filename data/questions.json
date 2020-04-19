@@ -77,7 +77,7 @@
 {"question": "We're a bit confused on implementing the iterator in ChainingHashDictionary"}
 {"question": "Help we have fewer than 3 sides"}
 {"question": "do not know what is wrong right now "}
-{"question": "Have trouble with lab", "actual_question": "t"}
+{"question": "Have trouble with lab", "actual_question": "f"}
 {"question": "C test for project 3, getting errors on stress tests"}
 {"question": "We have implemented most of the tests in MoveToFrontDictionary, however, it appears some duplicate cases are causing problems for our return values. "}
 {"question": "shouldn't be returning null\n"}
@@ -360,7 +360,7 @@
 {"question": "B tests debugging\n"}
 {"question": "god save me", "actual_question": "f"}
 {"question": "A few questions about general implementation of mark-and-sweep"}
-{"question": "\ud83c\udfb8"}
+{"question": "\ud83c\udfb8", "actual_question": "f"}
 {"question": "We are confused about generic pointer types in C"}
 {"question": "My project 0 code compiles without error, but fails all of the tests. I do not see what is wrong with it."}
 {"question": "get questions for Move"}
@@ -966,7 +966,7 @@
 {"question": "how to use void *"}
 {"question": "We have trouble debugging testCommon in C tests"}
 {"question": "Help please\n", "actual_question": "f"}
-{"question": "test files not reading", "actual_question": "t"}
+{"question": "test files not reading"}
 {"question": "How can I set the secret word as a final variable if I need to change it in the constructor?"}
 {"question": "Having issues with heap"}
 {"question": "Stack is not 16 bit aligned"}

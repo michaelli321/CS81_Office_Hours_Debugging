@@ -3,6 +3,11 @@ import numpy as np
 import json
 import os
 import re
+import pickle
+import utils
+
+import sys
+sys.path.insert(0, os.path.dirname(__file__))
 
 # def filter_dataset(filename):
 #     questions = list(set(pd.read_json(filename, lines=True)["question"]))
@@ -95,6 +100,13 @@ def create_new_label(state, existing_labels):
 
     return state
 
+def load_classifier(state):
+    filename = os.path.join(os.path.dirname(__file__), 'models/'+state['LABEL']+'_clf.pkl')
+    if os.path.exists(filename):
+        state['CLF'] = pickle.load(open(filename, 'rb'))
+
+    return state
+
 def load_label(state):
     existing_labels = load_existing_labels()
 
@@ -107,6 +119,7 @@ def load_label(state):
             if label in existing_labels:
                 state['LABEL'] = label
                 state['LABEL_VALS'] = existing_labels[label]
+                state = load_classifier(state)
             else:
                 print('Please enter a valid label from the following:')
                 print(', '.join(existing_labels.keys())+'\n')
@@ -141,9 +154,17 @@ def save_data(state):
             json.dump(dic, fout)
             fout.write('\n')
 
+def uncertainty(state, question):
+    clf, vectorizer = state['CLF']
+    question, _ = utils.preprocess_data([question], vectorizer)
+    probability = clf.predict_proba(question)[0][1]
+    confidence = abs(probability - .5)
+    return confidence
+
+
 def main():
     state = {'LABEL': None, 'DATA': None, 'DATAFILE': 'questions.json', 'LABEL_VALS': None, 
-    'RESERVED_KEYS': {'s', 'n', 'l', 'q'}}
+    'RESERVED_KEYS': {'s', 'n', 'l', 'q'}, 'CLF': None}
 
     # eventually want to have option to filter data and append to existing dataset
     state = prompt_and_load_file(state)
@@ -151,7 +172,10 @@ def main():
 
     num_labeled, val_splits = get_label_stats(state)
 
-    np.random.shuffle(state['DATA'])
+    if state['CLF']:
+        state['DATA'] = sorted(state['DATA'], key=lambda x: uncertainty(state, x['question']))
+    else:
+        np.random.shuffle(state['DATA'])
 
     for i in range(len(state['DATA'])):
         if state['LABEL'] in state['DATA'][i]:
