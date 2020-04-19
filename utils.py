@@ -26,7 +26,7 @@ from nltk.tokenize import RegexpTokenizer
 
 def load_data(filename, label_name):
     with open(filename, 'r') as f:
-        return np.array([[eval(data_point)['question'], eval(data_point)[label_name]] for data_point in f.read().splitlines() if label_name in eval(data_point)])
+        return np.array([[remove_non_ascii(eval(data_point)['question']), eval(data_point)[label_name]] for data_point in f.read().splitlines() if label_name in eval(data_point)])
 
 def remove_non_ascii(question):
 	return ''.join([i if ord(i) < 128 else '' for i in question])
