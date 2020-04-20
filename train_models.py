@@ -5,7 +5,7 @@ import os
 import re
 import pickle
 import utils
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, RandomizedSearchCV
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import multilabel_confusion_matrix
 
@@ -121,6 +121,34 @@ def save_model(state):
         pickle.dump((state['CLF'], state['VECTORIZER']), open(os.path.join(os.path.dirname(__file__), 'models/'+state['LABEL']+'_clf.pkl'), 'wb'))
         print('\nModel Saved')
 
+def parameter_tune(state):
+    n_estimators = [100, 250, 500, 750, 1000]
+    max_features = ['auto', 'log2']
+    max_depth = [None, 100, 500, 1000]
+    min_samples_split = [2, 5, 10, 12]
+    min_samples_leaf = [1, 2, 4, 8]
+    criterion = ['gini', 'entropy']
+    bootstrap = [True, False]
+
+    random_grid = {
+        'n_estimators': n_estimators,
+        'max_features': max_features,
+        'max_depth': max_depth,
+        'min_samples_split': min_samples_split,
+        'min_samples_leaf': min_samples_leaf,
+        'criterion': criterion,
+        'bootstrap': bootstrap
+    }
+
+    X, _ = utils.preprocess_data(state['TRAIN'][:,0], state['VECTORIZER'])
+    y = state['TRAIN'][:,1]
+    print('Tuning Model Parameters...\n\n')
+    clf = RandomForestClassifier()
+    rf_random = RandomizedSearchCV(estimator=clf, param_distributions=random_grid, n_jobs=-1)
+    rf_random.fit(X, y)
+    state['CLF'] = rf_random.best_estimator_
+    return state
+
 def main():
     preprocessors = {
         'actual_question': utils.actual_question_preprocessor,
@@ -129,7 +157,6 @@ def main():
     state = {'LABEL': None, 'DATA': None, 'TRAIN': None, 'TEST': None, 
     'CLF': None, 'VECTORIZER': None, 'PREPROCESSORS': preprocessors}
 
-    # eventually want to have option to filter data and append to existing dataset
     state = load_label(state)
     state = load_labeled_data(state)
     state = train_model(state)
@@ -152,7 +179,8 @@ def main():
         elif val == 'e':
             eval_errors(state)
         elif val == 'p':
-            pass
+            state = parameter_tune(state)
+            eval_errors(state)
         elif val == 'q':
             exit()
 
