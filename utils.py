@@ -32,7 +32,7 @@ def remove_non_ascii(question):
 	return ''.join([i if ord(i) < 128 else '' for i in question])
 
 def is_filename(text):
-    if '.c' in text or '.py' in text:
+    if '.c' in text or '.py' in text or '.h' in text:
         return True
     else:
         return False
@@ -52,12 +52,36 @@ def is_TA_or_instructor_name(text):
     else:
         return False
 
+def check_quotations(text):
+	text = text.replace('"', "")
+	text = text.replace("'", "")
+	text = text.replace("`", "")
+	return text
+
+def is_error_code(text):
+	errors = {
+	'seg',
+	'overflow',
+	'assertion',
+	'nullpointer',
+	'illegal',
+	'timeout',
+	'exception',
+	}
+
+	for err in errors:
+		if err in text:
+			return True
+
+	return False
+
 def actual_question_preprocessor(sentence):
 	sentence = remove_non_ascii(sentence)
-	tokenizer = RegexpTokenizer("[^;\s.?,!()]+\.c|[^;\s.,?!()]+\.py|[^;\s.?!(),]+\(\)|[^;\s.?,!()]+")
+	tokenizer = RegexpTokenizer("[^;\s.?,!()]+\.c|[^;\s.,?!()]+\.py|[^;\s.,?!()]+\.h|[^;\s.?!(),]+\(\)|[^;\s.?,!()]+")
 	sentence = tokenizer.tokenize(sentence.lower())
 
 	for i in range(len(sentence)):
+		sentence[i] = check_quotations(sentence[i])
 		if sentence[i].isnumeric():
 			sentence[i] = "numericnumber"
 		elif is_spelled_out_number(sentence[i]):
@@ -66,6 +90,8 @@ def actual_question_preprocessor(sentence):
 			sentence[i] = "filename"
 		elif is_TA_or_instructor_name(sentence[i]):
 			sentence[i] = "name"
+		elif is_error_code(sentence[i]):
+			sentence[i] = "errorcode"
 		# elif is_function(sentence[i]):
 		# 	sentence[i] = "function"
 		# elif is_snake_case(sentence[i]):

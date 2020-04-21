@@ -144,7 +144,7 @@ def parameter_tune(state):
     y = state['TRAIN'][:,1]
     print('Tuning Model Parameters...\n\n')
     clf = RandomForestClassifier()
-    rf_random = RandomizedSearchCV(estimator=clf, param_distributions=random_grid, n_jobs=-1)
+    rf_random = RandomizedSearchCV(estimator=clf, param_distributions=random_grid, n_jobs=-1, scoring='accuracy')
     rf_random.fit(X, y)
     state['CLF'] = rf_random.best_estimator_
     return state
