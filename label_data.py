@@ -155,9 +155,8 @@ def save_data(state):
             fout.write('\n')
 
 def uncertainty(state, question):
-    clf, vectorizer = state['CLF']
-    question, _ = utils.preprocess_data([question], vectorizer)
-    probability = clf.predict_proba(question)[0][1]
+    model = state['CLF']
+    probability = model.predict_proba([question])[0][1]
     confidence = abs(probability - .5)
     return confidence
 

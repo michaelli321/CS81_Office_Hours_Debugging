@@ -1,8 +1,5 @@
 import numpy as np
 from word2number import w2n
-import json
-import pandas as pd
-from sklearn.feature_extraction.text import CountVectorizer
 from nltk.tokenize import RegexpTokenizer
 from nltk.corpus import stopwords
 import re
@@ -161,18 +158,3 @@ def actual_question_preprocessor(sentence):
             sentence[i] = ""
 
     return ' '.join(sentence)
-
-def preprocess_data(x_data, vectorizer=None, preprocessor=None):
-    sentence_lens = [[len(sentence.split())] for sentence in x_data]
-    X = None
-
-    if vectorizer:
-        X = vectorizer.transform(x_data)
-    else:
-        vectorizer = CountVectorizer(preprocessor=preprocessor)
-        # vectorizer = TfidfVectorizer(preprocessor=preprocess_sentence)
-        X = vectorizer.fit_transform(x_data)
-
-    X = np.hstack((X.toarray(), sentence_lens))
-
-    return X, vectorizer
