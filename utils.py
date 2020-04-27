@@ -4,6 +4,19 @@ import json
 import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
 from nltk.tokenize import RegexpTokenizer
+from nltk.corpus import stopwords
+import re
+
+stop_words = set(stopwords.words('English'))
+stop_words.update({
+    'help',
+    'please',
+    'need',
+    'problem',
+    'stuff',
+    'thing',
+    'question'
+    })
 
 # def filter_dataset(filename):
 #     questions = list(set(pd.read_json(filename, lines=True)["question"]))
@@ -29,13 +42,15 @@ def load_data(filename, label_name):
         return np.array([[remove_non_ascii(eval(data_point)['question']), eval(data_point)[label_name]] for data_point in f.read().splitlines() if label_name in eval(data_point)])
 
 def remove_non_ascii(question):
-	return ''.join([i if ord(i) < 128 else '' for i in question])
+    return ''.join([i if ord(i) < 128 else '' for i in question])
 
 def is_filename(text):
-    if '.c' in text or '.py' in text or '.h' in text:
-        return True
-    else:
-        return False
+    file_extension = {'.c', '.py', '.h', '.txt'}
+
+    for ext in file_extension:
+        if ext in text:
+            return True
+    return False
 
 def is_spelled_out_number(text):
     try:
@@ -47,69 +62,117 @@ def is_spelled_out_number(text):
 def is_TA_or_instructor_name(text):
     names = {"adam", "victor", "jesse", "peter"}
     
-    if text in names:
+    for name in names:
+        if name in text:
+            return True
+
+    return False
+
+def check_quotations(text):
+    text = text.replace('"', "")
+    text = text.replace("'", "")
+    text = text.replace("`", "")
+    return text
+
+def is_error_code(text):
+    errors = {
+    'seg',
+    'overflow',
+    'assertion',
+    'nullpointer',
+    'illegal',
+    'timeout',
+    'exception',
+    }
+
+    for err in errors:
+        if err in text:
+            return True
+
+    return False
+
+def is_system_word(text):
+    system_words = {'git', 'ssh', 'intellij', 'server', 'sdl', 'sdk', 'config', 'makefile', 'vm'}
+    
+    for word in system_words:
+        if word in text:
+            return True
+    
+    return False
+
+def is_function(text):
+    if '()' in text:
         return True
     else:
         return False
 
-def check_quotations(text):
-	text = text.replace('"', "")
-	text = text.replace("'", "")
-	text = text.replace("`", "")
-	return text
+def check_backslash(text):
+    if "\\" in text:
+        return text
 
-def is_error_code(text):
-	errors = {
-	'seg',
-	'overflow',
-	'assertion',
-	'nullpointer',
-	'illegal',
-	'timeout',
-	'exception',
-	}
+    return re.sub(r"^[a-zA-Z0-9]+\/[a-zA-z0-9]+\Z", ' '.join(text.split('/')), text)
 
-	for err in errors:
-		if err in text:
-			return True
+def check_camelcase(text):
+    if 'git' not in text.lower() and 'exception' not in text.lower() and re.match(r"^[a-zA-Z]+([A-Z][a-z0-9]+)+", text):
+        return True
+    else:
+        return False
 
-	return False
+def check_snake_case(text):
+    if re.match(r"[a-zA-Z_]+_[a-zA-Z_]+", text):
+        return True
+    else:
+        return False
 
+def check_camel_snakecase(text):
+    if check_camelcase(text) or check_snake_case(text):
+        return 'camelsnakecase'
+    else:
+        return text
+    
 def actual_question_preprocessor(sentence):
-	sentence = remove_non_ascii(sentence)
-	tokenizer = RegexpTokenizer("[^;\s.?,!()]+\.c|[^;\s.,?!()]+\.py|[^;\s.,?!()]+\.h|[^;\s.?!(),]+\(\)|[^;\s.?,!()]+")
-	sentence = tokenizer.tokenize(sentence.lower())
+    sentence = remove_non_ascii(sentence)
+    tokenizer = RegexpTokenizer("[^;\s.?,!()]+\.c|[^;\s.,?!()]+\.py|[^;\s.,?!()]+\.h|[^;\s.,?!()]+\.txt|[^;\s.?!(),]+\(\)|[^;\s.?,!()]+")
+    sentence = tokenizer.tokenize(sentence)
 
-	for i in range(len(sentence)):
-		sentence[i] = check_quotations(sentence[i])
-		if sentence[i].isnumeric():
-			sentence[i] = "numericnumber"
-		elif is_spelled_out_number(sentence[i]):
-			sentence[i] = "nonnumericnumber"
-		elif is_filename(sentence[i]):
-			sentence[i] = "filename"
-		elif is_TA_or_instructor_name(sentence[i]):
-			sentence[i] = "name"
-		elif is_error_code(sentence[i]):
-			sentence[i] = "errorcode"
-		# elif is_function(sentence[i]):
-		# 	sentence[i] = "function"
-		# elif is_snake_case(sentence[i]):
-		# 	sentence[i] = "snakecase"
+    for i in range(len(sentence)):
+        sentence[i] = check_quotations(sentence[i])
+        sentence[i] = check_backslash(sentence[i])
+        sentence[i] = check_camel_snakecase(sentence[i])
+        sentence[i] = sentence[i].lower()
 
-	return ' '.join(sentence)
+        if sentence[i] in stop_words:
+            sentence[i] = ""
+        elif sentence[i].isnumeric():
+            sentence[i] = "numericnumber"
+        elif is_spelled_out_number(sentence[i]):
+            sentence[i] = "nonnumericnumber"
+        elif is_filename(sentence[i]):
+            sentence[i] = "filename"
+        elif is_TA_or_instructor_name(sentence[i]):
+            sentence[i] = "name"
+        elif is_error_code(sentence[i]):
+            sentence[i] = "errorcode"
+        elif is_system_word(sentence[i]):
+            sentence[i] = "sys"
+        elif is_function(sentence[i]):
+          sentence[i] = "func"
+        elif sentence[i] in stopwords.words('english'):
+            sentence[i] = ""
+
+    return ' '.join(sentence)
 
 def preprocess_data(x_data, vectorizer=None, preprocessor=None):
-	sentence_lens = [[len(sentence.split())] for sentence in x_data]
-	X = None
+    sentence_lens = [[len(sentence.split())] for sentence in x_data]
+    X = None
 
-	if vectorizer:
-		X = vectorizer.transform(x_data)
-	else:
-		vectorizer = CountVectorizer(preprocessor=preprocessor)
-		# vectorizer = TfidfVectorizer(preprocessor=preprocess_sentence)
-		X = vectorizer.fit_transform(x_data)
+    if vectorizer:
+        X = vectorizer.transform(x_data)
+    else:
+        vectorizer = CountVectorizer(preprocessor=preprocessor)
+        # vectorizer = TfidfVectorizer(preprocessor=preprocess_sentence)
+        X = vectorizer.fit_transform(x_data)
 
-	X = np.hstack((X.toarray(), sentence_lens))
+    X = np.hstack((X.toarray(), sentence_lens))
 
-	return X, vectorizer
+    return X, vectorizer
