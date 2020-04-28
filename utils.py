@@ -12,7 +12,10 @@ stop_words.update({
     'problem',
     'stuff',
     'thing',
-    'question'
+    'question',
+    'work',
+    'working',
+    'works'
     })
 
 # def filter_dataset(filename):

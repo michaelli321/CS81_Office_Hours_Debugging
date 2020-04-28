@@ -2,25 +2,25 @@
 {"question": "Need help with dfs for finding locations"}
 {"question": "Returning empty deque\n\n"}
 {"question": "Q6 (user-space-timing.c) works on "}
-{"question": "put/get doesn't work\n\n\n"}
+{"question": "put/get doesn't work\n\n\n", "actual_question": "f"}
 {"question": "get score what to put as text \n"}
 {"question": "Lab 4 B Tests Recursion Concept"}
-{"question": "size is off by 1 in B tests"}
+{"question": "size is off by 1 in B tests", "actual_question": "t"}
 {"question": "Question about self-cycle in last part"}
-{"question": "B tests running infinitely long"}
+{"question": "B tests running infinitely long", "actual_question": "t"}
 {"question": "We have a question about the location object"}
 {"question": "TrieMaps and the corresponding methods"}
 {"question": "Git test failing\n\n"}
-{"question": "What side of a queue is added to"}
+{"question": "What side of a queue is added to", "actual_question": "t"}
 {"question": "RandomHangmanChooser throws wrong exception"}
 {"question": "not sure how to begin with q5"}
-{"question": "hello we have a question about fact_resume and its purpose, and how it is reached", "question_type": "c"}
+{"question": "hello we have a question about fact_resume and its purpose, and how it is reached", "question_type": "c", "actual_question": "t"}
 {"question": "not sure how to do zeroK"}
 {"question": "how to use void *"}
 {"question": "EvilHangmanChooser makeGuess implementation"}
 {"question": "need help understanding c tests"}
 {"question": "We're working on the B and A tests."}
-{"question": "I have a question about the project for this week."}
+{"question": "I have a question about the project for this week.", "actual_question": "f"}
 {"question": "Questions about when to lock/unlock"}
 {"question": "Dijkstra implementation not working"}
 {"question": "How to interpret perf-iter plateau?"}
@@ -35,7 +35,7 @@
 {"question": "Understanding __sthread_initialize_context"}
 {"question": "I'm bad at stats. Pls help with improvement calculation"}
 {"question": "First few lines of assembly\n\n"}
-{"question": "Stack is not 16 bit aligned"}
+{"question": "Stack is not 16 bit aligned", "actual_question": "t"}
 {"question": "Where do I store branch_address?"}
 {"question": "Having trouble with adding edges"}
 {"question": "Test failing, unsure why"}
@@ -64,7 +64,7 @@
 {"question": "BST Dictionary debugging"}
 {"question": "Trying to see if Queuing works"}
 {"question": "test 7 not sure what.."}
-{"question": "please help us the test is being mysterious"}
+{"question": "please help us the test is being mysterious", "actual_question": "f"}
 {"question": "I have some miscellaneous questions"}
 {"question": "Question about using array to back heap"}
 {"question": "Question about how to change ordering in the heap"}
@@ -79,9 +79,9 @@
 {"question": "How to manage set/map of words"}
 {"question": "Issue I dont know how to explain"}
 {"question": "C tests help with the dequeue"}
-{"question": "Something happened when I committed?\n"}
+{"question": "Something happened when I committed?\n", "actual_question": "f"}
 {"question": "What is @Override and @Test and stuff?"}
-{"question": "My complete function is failing", "question_type": "d"}
+{"question": "My complete function is failing", "question_type": "d", "actual_question": "f"}
 {"question": "Confused with what spec is asking"}
 {"question": "size complexity, hashdictionary concepts"}
 {"question": "Stage 5 moving the stack"}
@@ -108,7 +108,7 @@
 {"question": "Several quick conceptual questions."}
 {"question": "seg fault on test 2 stage", "question_type": "d"}
 {"question": "Having problems implementing keySet.\n"}
-{"question": "i dont know whats wrong please help lmao; also confused about hashing\n"}
+{"question": "i dont know whats wrong please help lmao; also confused about hashing\n", "actual_question": "f"}
 {"question": "how to create a new family \n"}
 {"question": "stress test enqueue dequeue"}
 {"question": "ChainingHashDictionary iterator is broken."}
@@ -126,7 +126,7 @@
 {"question": "chaininghash methods and remove help"}
 {"question": "What should i do with the label oncei get it"}
 {"question": "the last class is not working for me \n"}
-{"question": "https://grinch.caltech.edu/queue"}
+{"question": "https://grinch.caltech.edu/queue", "actual_question": "f"}
 {"question": "quick question about a test for a field"}
 {"question": "How to make a new hashmap"}
 {"question": "test files not reading"}
@@ -4538,7 +4538,7 @@
 {"question": "My wc program is entering its while loop one more time than expected. I'm not sure why it does not break out with my feof() condition. This is leading to an execution error on the empty file test."}
 {"question": "im bad", "actual_question": "f"}
 {"question": "We get an error about the #include sdl_wrapper.h line when we try to compile our pacman.c file.", "actual_question": "t"}
-{"question": "I'd like to talk through my general steps on approaching AIHangmanGuesser and make sure I am understanding things correctly "}
+{"question": "I'd like to talk through my general steps on approaching AIHangmanGuesser and make sure I am understanding things correctly ", "actual_question": "t"}
 {"question": "Regarding an error message(main is usually not a non-static function)", "actual_question": "t"}
 {"question": "wc.c test failing empty test not sure why, "}
 {"question": "Debugging Sort class"}
@@ -4579,8 +4579,8 @@
 {"question": "impossible bomb??"}
 {"question": "beavermaps help please"}
 {"question": "I'm not sure how exactly I should implement the iterator for linked deque"}
-{"question": "Debugging vector.c, I have several small questions like syntax in typedef struct and confusion with pointers in one of my functions in vector.c"}
-{"question": "I need help with the idea of push/pop and enqueue/dequeue. I don't understand how they're different from the addBack/removeBack and the addFront/removeFront functions."}
+{"question": "Debugging vector.c, I have several small questions like syntax in typedef struct and confusion with pointers in one of my functions in vector.c", "actual_question": "t"}
+{"question": "I need help with the idea of push/pop and enqueue/dequeue. I don't understand how they're different from the addBack/removeBack and the addFront/removeFront functions.", "actual_question": "t"}
 {"question": "All tests are passing locally but A and C are failing a timing test on Gitlab. I tried simplifying everything I could think of so would really appreciate some help trying to locate the problem."}
 {"question": "BSTDictionary help"}
 {"question": "The final B test times out. I'm trying to figure out why the put and get methods are taking so long.", "actual_question": "t", "question_type": "d"}
@@ -4670,7 +4670,7 @@
 {"question": "atomic stuff okea"}
 {"question": "Wondering how to properly parse the files in BeaverMapsGraph. I've seen the example on the spec of course, but I'm not sure how to translate this to the waypoint and road files"}
 {"question": "I'm getting a stack buffer overflow error when I run test7 and I'm not sure why", "actual_question": "t"}
-{"question": "The CMS server is taking a really long time to put files on atom. Just checking if there is a current issue? I put the command atom longest.c and it a", "question_type": "sys"}
+{"question": "The CMS server is taking a really long time to put files on atom. Just checking if there is a current issue? I put the command atom longest.c and it a", "question_type": "sys", "actual_question": "t"}
 {"question": "Setting up a stack and preparing/tearing functions - not sure exactly what is meant."}
 {"question": "I have a timeout and an error on my dictionary and long line tests for longest.c. I made sure that the while loop is not running forever, there is sufficient memory allocated, and minimized extraneous calls to strlen.\n "}
 {"question": "sthread help              "}
@@ -4692,7 +4692,7 @@
 {"question": "Help with Q10."}
 {"question": "Can I create a specific function for freeing memory if I pass the char * 's that need to be freed to a different function? Can I have a separate function return the next word (for longest.c) if I pass it the variable for the file. Like willl"}
 {"question": "My peekBack() returns a value when it's supposed to return null. I've tried outputting the reference and me when the assertEquals fails, and I think it's probably a problem with my addBack() and/or removeBack(), but I'm getting real lost when I try to figure out where I went wrong.", "actual_question": "t"}
-{"question": "I keep getting null pointer exceptions. Also, when I run my tests it keeps printing out a bunch of 20's. I also have no ideal how to implement  Chaining Hash Dictionary"}
+{"question": "I keep getting null pointer exceptions. Also, when I run my tests it keeps printing out a bunch of 20's. I also have no ideal how to implement  Chaining Hash Dictionary", "actual_question": "t"}
 {"question": "Hangman Guesser doesn't find any words matching pattern. ", "actual_question": "t"}
 {"question": "nullptr\n"}
 {"question": "infinite loops\n", "actual_question": "f"}
@@ -4701,8 +4701,8 @@
 {"question": "number of lines wc.c part\ntests give an error \"no new line at end of file\"", "actual_question": "t"}
 {"question": "started lab recently, working on constructor and trying to create a sorted set. Not sure how to access dictionary text file provided \n\n-accessing the "}
 {"question": "For LinkedDeque, IDeque stress test is not returning null when it should. Have tried adding print statements and using debugger, but can't tell how removeFront() and removeBack() aren't working properly."}
-{"question": "For IDeque stress test not returning null when it should. Have tried adding print statements and using debugger, but can't tell how removeFront() and removeBack() aren't working properly."}
-{"question": "Lab 3\n"}
+{"question": "For IDeque stress test not returning null when it should. Have tried adding print statements and using debugger, but can't tell how removeFront() and removeBack() aren't working properly.", "actual_question": "t"}
+{"question": "Lab 3\n", "actual_question": "f"}
 {"question": "chaininghashdictionary issues", "actual_question": "f"}
 {"question": "Not sure how initialize context works, like how we'd set the garbage values on the stack of a thread to 0. "}
 {"question": "Part 5 Questions ", "actual_question": "f"}
@@ -4754,7 +4754,7 @@
 {"question": "if there's one element in a linked list is it both the head and tail?"}
 {"question": "initialization checkup"}
 {"question": "topk sort probelmmmmmmm"}
-{"question": "Debugging help \n"}
+{"question": "Debugging help \n", "actual_question": "f"}
 {"question": "Generating th\nwc.c:14:18: warning: implicitly declaring library function 'malloc' with type 'void *(unsigned long)'\n      [-Wimplicit-function-declaration]\n  char *result = malloc(number_to_read * sizeof(char));\n                 ^\nwc.c:14:18: note: include the header <stdlib.h> or explicitly provide a declaration for 'malloc'\nwc.c:18:5: warning: implicit declaration of function 'free' is invalid in C99 [-Wimplicit-function-declaration]\n    free(result);\n    ^\nwc.c:24:18: warning: result of comparison against a string literal is unspecified (use strncmp instead)\n      [-Wstring-compare]\n      if (result == \"\\n\") {\n                 ^  ~~~~\n3 warnings generated.\n/usr/bin/ld:data/dictionary.txt: file format not recognized; treating as linker script\n/usr/bin/ld:data/dictionary.txt:2: syntax error\nclang-5.0.1: error: linker command failed with exit code 1 (use -v to see invocation)"}
 {"question": "victor, I need help", "actual_question": "f"}
 {"question": "dghnynjtyiluodlsiukaizyu"}
@@ -4764,17 +4764,17 @@
 {"question": "MELTDOWN MELTDOWN MELTDOWN", "actual_question": "f"}
 {"question": "I don't understand how to implement the chaining hash dictionary"}
 {"question": "Not running on git - access denied?", "actual_question": "t", "question_type": "sys"}
-{"question": "For longest.c, the tester says there's an execution error for empty and really_long_line, but they both appear to print the correct thing when I run them individually. I tried looking into the tester, but I'm a bit lost."}
+{"question": "For longest.c, the tester says there's an execution error for empty and really_long_line, but they both appear to print the correct thing when I run them individually. I tried looking into the tester, but I'm a bit lost.", "actual_question": "t"}
 {"question": "cannot be cast to data type when making array (to store data) in chaining hash dictionary "}
 {"question": "Explaining part 8"}
 {"question": "Help with Percolate\n"}
-{"question": "Confused about how to push to gitlab. I tried running the commands in the secure shell app, but it was unable to auto-detect email address"}
+{"question": "Confused about how to push to gitlab. I tried running the commands in the secure shell app, but it was unable to auto-detect email address", "actual_question": "t"}
 {"question": "cannot be cast to data type when making underlying array (to store data) in chaining hash dictionary "}
 {"question": "DICTIONARIES!", "question_type": "c"}
 {"question": "structs in C..."}
 {"question": "Math.annotated.s"}
 {"question": "Help with wc.c--more specifically checking a file does not exist", "actual_question": "t"}
-{"question": "ws,jerkwejrlwjelrjkwelr"}
+{"question": "ws,jerkwejrlwjelrjkwelr", "actual_question": "f"}
 {"question": "I am getting an error that says I might not have initialized the final word. I have private final String wordToGuess;. If I try to set it equal to something or set it equal to new String() it says I can't assign whatever I get from choosing the random word to it."}
 {"question": "thread corrupting"}
 {"question": "Runtime for "}
@@ -4787,7 +4787,7 @@
 {"question": "Doing phase 1"}
 {"question": "chaininghashdictionary\n"}
 {"question": "Debugging removeBack in LinkedDeque.  I have tried to cover all three cases of the end being null, the end being the only node, and the end being linked to other nodes, but the test case shows that a node has not been removed."}
-{"question": "Can I create a specific function for freeing memory if I pass the char * 's that need to be freed to a different function? Can I have a separate function return the next word (for longest.c) if I pass it the variable for the file. Like will     fread(result, sizeof(char), 1, f) keep it's place in the file even if I switch between functions.\n"}
+{"question": "Can I create a specific function for freeing memory if I pass the char * 's that need to be freed to a different function? Can I have a separate function return the next word (for longest.c) if I pass it the variable for the file. Like will     fread(result, sizeof(char), 1, f) keep it's place in the file even if I switch between functions.\n", "actual_question": "t"}
 {"question": "Bouncing star yemp"}
 {"question": "I have some difficulties passing the Test main() instance [3] for C Test and generally Test main() for B Test. I also have some question about the last part (Decrypting cryptogram.txt, committing and pushing, and checking results)."}
 {"question": "I have some difficulties passing the Test main() instance [3] for C Test and generally Test main() for B Test. I also have some question about the last part (Decrypting cryptogram.txt)"}
@@ -4804,7 +4804,7 @@
 {"question": "In BSTDictionary: remove returning the wrong value, and size is incorrect.  Have tried using the debugger but it seems to be fine in the first test case, then times out after resuming the program w/ debugger.", "question_type": "d"}
 {"question": "IDeque stress test not returning null. Have tried adding print statements and using debugger, but can't tell when "}
 {"question": "part 1 (\n"}
-{"question": "longest.c, trying to find position of longest word before grabbing it, correctly finding the longest word with some documents but not others"}
+{"question": "longest.c, trying to find position of longest word before grabbing it, correctly finding the longest word with some documents but not others", "actual_question": "t"}
 {"question": "topksort help please"}
 {"question": "CLRU?"}
 {"question": "Play "}
@@ -4819,8 +4819,8 @@
 {"question": "exiting the "}
 {"question": "hashtree \n\n\n"}
 {"question": "Having problems with the runtime of algorithms NFU and aging, as output is correct but it takes hours to finish running them. I've looked at all of the loops but couldn't see anything that would cause long-running loops.", "actual_question": "t"}
-{"question": "mm_checkheap\n"}
-{"question": "victor I need help", "question_type": "c"}
+{"question": "mm_checkheap\n", "actual_question": "f"}
+{"question": "victor I need help", "question_type": "c", "actual_question": "f"}
 {"question": "victor linus chen i submit a humble request regarding your assistance", "actual_question": "f"}
 {"question": "Help! Help! Help!Help!"}
 {"question": "malloc debugging "}
@@ -4869,7 +4869,7 @@
 {"question": "Can't get remove to work. I'm using a stack to track alphabets and nodes I've already traversed. Want to see if it works. Also, I don't think I understand the B tests conceptually at all.\n"}
 {"question": "AlphaBeta Pruning"}
 {"question": "Circular toString "}
-{"question": "How do the stack methods run i constant time if we use an array to store our data? i.e. i figure we have to use size() to know where the last non-null element in our array is to make sure these run in constant time, but I'm not sure how."}
+{"question": "How do the stack methods run i constant time if we use an array to store our data? i.e. i figure we have to use size() to know where the last non-null element in our array is to make sure these run in constant time, but I'm not sure how.", "actual_question": "t"}
 {"question": "My IDeque "}
 {"question": "PQNode needed\n"}
 {"question": "B: Edge case not working. (The Avengers Premiere will show up in complete(), but not The Avengers itself (search term)).", "actual_question": "t"}

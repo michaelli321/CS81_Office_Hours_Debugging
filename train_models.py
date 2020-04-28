@@ -80,7 +80,7 @@ def parameter_tune(state):
         'clf__bootstrap': [True, False]
     }
 
-    search = RandomizedSearchCV(state['MODEL'], param_grid, n_jobs=-1, n_iter=500)
+    search = RandomizedSearchCV(state['MODEL'], param_grid, n_jobs=-1, n_iter=100)
     search.fit(state['DATA'][:,0], state['DATA'][:,1])
     state['MODEL'] = search.best_estimator_
     return state
