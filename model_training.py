@@ -11,7 +11,6 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 import warnings
 warnings.filterwarnings('ignore')
-# from sklearn.preprocessing import StandardScaler
 
 class WordCountTransformer(BaseEstimator, TransformerMixin):
     def __init__(self):

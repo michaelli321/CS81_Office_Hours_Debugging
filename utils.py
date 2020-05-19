@@ -19,25 +19,6 @@ stop_words.update({
     'works'
 })
 
-# def filter_dataset(filename):
-#     questions = list(set(pd.read_json(filename, lines=True)["question"]))
-#     questions.sort(key=lambda x: len(x), reverse=True)
-    
-#     filtered = []
-    
-#     for question in questions:
-#         if not any([question in filtered_question["question"] for filtered_question in filtered]):
-#             filtered.append({"question": question})
-
-#     np.random.shuffle(filtered)
-
-#     with open('/Users/michaelli/Desktop/data_labeler/data/questions.json', 'w') as fout:
-#         for dic in filtered:
-#             json.dump(dic, fout)
-#             fout.write("\n")
-    
-#     return filtered
-
 def load_data(filename, label_name):
     with open(filename, 'r') as f:
         return np.array([[remove_non_ascii(eval(data_point)['question']), eval(data_point)[label_name]] for data_point in f.read().splitlines() if label_name in eval(data_point)])
