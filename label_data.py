@@ -70,7 +70,7 @@ def load_existing_labels():
 
     return {label.split()[0]: set(label.split()[1:]) for label in existing_labels}
 
-def get_values_for_new_label():
+def get_values_for_new_label(state):
     values = []
     value = input("Please enter a value for the label\n")
     
@@ -90,7 +90,7 @@ def create_new_label(state, existing_labels):
     while not validate_input(state, label, existing_labels):
         label = input("Please enter a valid new label\n")
 
-    values = get_values_for_new_label()
+    values = get_values_for_new_label(state)
     
     with open('labels', 'a') as f:
         f.write(label + ' '+' '.join(values)+'\n')
@@ -159,7 +159,6 @@ def uncertainty(state, question):
     probability = model.predict_proba([question])[0][1]
     confidence = abs(probability - .5)
     return confidence
-
 
 def main():
     state = {'LABEL': None, 'DATA': None, 'DATAFILE': 'questions.json', 'LABEL_VALS': None, 

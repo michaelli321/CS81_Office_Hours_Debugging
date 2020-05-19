@@ -33,7 +33,10 @@ def load_label(state):
     return state
 
 def load_labeled_data(state):
-    state['DATA'] = utils.load_data(os.path.join(os.path.dirname(__file__), 'data/questions.json'), state['LABEL'])
+    state['DATA'] = utils.load_data(os.path.join(os.path.dirname(__file__), state['DATAFILE']), state['LABEL'])
+    if state['LABEL'] == 'answerable':
+        state['DATA'] = np.array([[state['DATA'][:,0][i], 't'] if (state['DATA'][:,1][i] == 't' or 
+        state['DATA'][:,1][i] == 'c') else [state['DATA'][:,0][i], 'f'] for i in range(len(state['DATA']))])
     return state
 
 def eval_errors(state):
@@ -67,7 +70,7 @@ def save_model(state):
         pickle.dump(state['MODEL'], open(os.path.join(os.path.dirname(__file__), 'models/'+state['LABEL']+'_clf.pkl'), 'wb'))
         print('\nModel Saved')
 
-def parameter_tune(state):
+def forest_parameter_tune(state):
     param_grid = {
         'features__ngram__ngram_range': [(1,1), (1,2), (1,3)],
         'features__ngram__max_features': [None, 100, 250, 500, 1000, 1500, 2000, 2500, 3000],
@@ -85,15 +88,41 @@ def parameter_tune(state):
     state['MODEL'] = search.best_estimator_
     return state
 
+def lr_tune(state):
+    param_grid = {
+        'features__vectorizer__ngram_range': [(1,1), (1,2), (1,3)],
+        'features__vectorizer__max_features': [None, 100, 250, 500, 1000, 1500, 2000, 2500, 3000],
+        'clf__C': [.01, .1, 1, 10, 100],
+        'clf__class_weight': [{'t': 2}, {'t': 2.5}, {'t': 1.5}, {'t': 3}, {'f': .5}, {'f': .75}]
+    }
+
+    search = RandomizedSearchCV(state['MODEL'], param_grid, n_jobs=-1, n_iter=100)
+    search.fit(state['DATA'][:,0], state['DATA'][:,1])
+    state['MODEL'] = search.best_estimator_
+    return state
+
 
 def main():
     model_training_funcs = {
         'actual_question': model_training.train_actual_question,
+        'answerable': model_training.train_answerable
+    }
+
+    param_tuning_funcs = {
+        'actual_question': forest_parameter_tune,
+        'answerable': lr_tune
+    }
+
+    datafile = {
+        'actual_question': 'data/questions.json',
+        'answerable': 'data/tot.json'
     }
 
     state = {'LABEL': None, 'DATA': None, 'MODEL': None}
 
     state = load_label(state)
+    state['DATAFILE'] = datafile[state['LABEL']]
+
     state = load_labeled_data(state)
     state['MODEL'] = model_training_funcs[state['LABEL']]()
     eval_errors(state)
@@ -112,7 +141,7 @@ def main():
         elif val == 'e':
             eval_errors(state)
         elif val == 'p':
-            state = parameter_tune(state)
+            state = param_tuning_funcs[state['LABEL']](state)
             eval_errors(state)
         elif val == 'q':
             exit()

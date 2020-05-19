@@ -2,11 +2,16 @@ import sys
 import os
 sys.path.insert(0, os.path.dirname(__file__))
 
+import numpy as np
 import utils
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.pipeline import Pipeline, FeatureUnion
 from sklearn.base import BaseEstimator, TransformerMixin
-from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
+import warnings
+warnings.filterwarnings('ignore')
+# from sklearn.preprocessing import StandardScaler
 
 class WordCountTransformer(BaseEstimator, TransformerMixin):
     def __init__(self):
@@ -57,3 +62,21 @@ def train_actual_question():
 
     return pipeline
 
+def train_answerable():
+    answerable_data = utils.load_data(os.path.join(os.path.dirname(__file__), 'data/tot.json'), 'answerable')
+    filtered_data = np.array([[answerable_data[:,0][i], 't'] if (answerable_data[:,1][i] == 't' or 
+        answerable_data[:,1][i] == 'c') else [answerable_data[:,0][i], 'f'] for i in range(len(answerable_data))])
+
+    pipeline = Pipeline([
+        ('features', FeatureUnion([
+            ('vectorizer', TfidfVectorizer(preprocessor=utils.answerable_preprocessor)),
+            ('char_count', CharacterCountTransformer()),
+            ('word_count', WordCountTransformer())
+        ])),
+        ('clf', LogisticRegression(max_iter=1000, class_weight={'t':2.5}))
+    ])
+
+    X, y = filtered_data[:,0], filtered_data[:,1]
+    pipeline.fit(X, y)
+
+    return pipeline

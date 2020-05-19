@@ -1,5 +1,6 @@
 import numpy as np
 from word2number import w2n
+from nltk import word_tokenize
 from nltk.tokenize import RegexpTokenizer
 from nltk.corpus import stopwords
 import re
@@ -16,7 +17,7 @@ stop_words.update({
     'work',
     'working',
     'works'
-    })
+})
 
 # def filter_dataset(filename):
 #     questions = list(set(pd.read_json(filename, lines=True)["question"]))
@@ -110,7 +111,7 @@ def check_backslash(text):
     if "\\" in text:
         return text
 
-    return re.sub(r"^[a-zA-Z0-9]+\/[a-zA-z0-9]+\Z", ' '.join(text.split('/')), text)
+    return re.sub(r"^[a-zA-Z0-9]+\/[a-zA-z0-9]+\Z|^[a-zA-Z0-9]+\/[a-zA-z0-9]+\/[a-zA-z0-9]+\Z", ' '.join(text.split('/')), text)
 
 def check_camelcase(text):
     if 'git' not in text.lower() and 'exception' not in text.lower() and re.match(r"^[a-zA-Z]+([A-Z][a-z0-9]+)+", text):
@@ -129,6 +130,29 @@ def check_camel_snakecase(text):
         return 'camelsnakecase'
     else:
         return text
+
+def answerable_preprocessor(sentence):
+    sentence = check_quotations(sentence)
+    sentence = word_tokenize(sentence)
+    
+    for i in range(len(sentence)):
+        sentence[i] = check_camel_snakecase(sentence[i])
+        sentence[i] = sentence[i].lower()
+
+        if sentence[i].isnumeric():
+            sentence[i] = "numericnumber"
+        elif is_spelled_out_number(sentence[i]):
+            sentence[i] = "nonnumericnumber"
+        elif is_TA_or_instructor_name(sentence[i]):
+            sentence[i] = "name"
+        elif is_error_code(sentence[i]):
+            sentence[i] = "errorcode"
+        elif is_system_word(sentence[i]):
+            sentence[i] = "sys"
+        elif is_function(sentence[i]):
+            sentence[i] = "func"
+
+    return ' '.join(sentence)
     
 def actual_question_preprocessor(sentence):
     sentence = remove_non_ascii(sentence)
@@ -156,8 +180,6 @@ def actual_question_preprocessor(sentence):
         elif is_system_word(sentence[i]):
             sentence[i] = "sys"
         elif is_function(sentence[i]):
-          sentence[i] = "func"
-        elif sentence[i] in stopwords.words('english'):
-            sentence[i] = ""
+            sentence[i] = "func"
 
     return ' '.join(sentence)
