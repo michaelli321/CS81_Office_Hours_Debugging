@@ -1,7 +1,6 @@
-## Label Definitions:
+## CS81: Undergraduate Projects in Computer Science:
 
-<b>actual_question</b> - Does the question narrow the scope of the issue?  
-<b>question_type</b>  
-    debugging - the student has function fully writen and code is not working as intended  
-    conceptual - the student has function partially written and is lost or simple question  
-    system - issue with system setup or non code writing question
+I worked with Professor Adam Blank on a project to help students ask better questions using the online office hours question tool. I developed two models that filtered questions on whether they were an actual question ("What is a Linked List" vs "pls help") and whether or not the question was answerable. I created a data labeling interface `label_data.py` and a model training interface `train_models.py` to aid in this task. `question_funcs.py` holds the functions that return T/F for a given question for the given model. 
+
+CV Accuracy of actual question model: ~91%
+CV Accuracy of answerable model: ~85%
